@@ -2,7 +2,7 @@
 #Tue Dec 05 16:42:40 CET 2017
 launch.application$Boolean=false
 rmiPort$Long=8005
-app.jiraHome=/var/atlassian/application-data/jira
+app.jiraHome=/var/atlassian/jira
 app.install.service$Boolean=true
 existingInstallationDir=/opt/JIRA Software
 sys.confirmedUpdateInstallationString=false
