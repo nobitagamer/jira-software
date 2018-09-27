@@ -107,16 +107,12 @@ RUN apk add --no-cache curl xmlstarlet bash ttf-dejavu tini \
 # 	&& jar uf /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar com/atlassian/extras/decoder/v2/Version2LicenseDecoder.class \
 # 	&& rm -rf ./com
 
-COPY ./com ./com
-
 COPY imagescripts ${JIRA_SCRIPTS}
 
 RUN set -x \
-    && jar uf /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar com/atlassian/extras/decoder/v2/Version2LicenseDecoder.class \
-    && jar uf /opt/atlassian/jira/atlassian-jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin-manager-plugin-2.22.9.jar com/atlassian/extras/decoder/v2/Version2LicenseDecoder.class \
-	&& rm -rf ./com
+    && /bin/bash ${JIRA_SCRIPTS}/patch.sh *.jar ${JIRA_INSTALL}/atlassian-jira/WEB-INF/
 
-RUN sed -i 's/JVM_MINIMUM_MEMORY="384m"/JVM_MINIMUM_MEMORY="1024m"/g' /opt/atlassian/jira/bin/setenv.sh \
+RUN sed -i 's/JVM_MINIMUM_MEMORY="384m"/JVM_MINIMUM_MEMORY="768m"/g' /opt/atlassian/jira/bin/setenv.sh \
 	&& sed -i 's/JVM_MAXIMUM_MEMORY="768m"/JVM_MAXIMUM_MEMORY="2048m"/g' /opt/atlassian/jira/bin/setenv.sh
 
 # Use the default unprivileged account. This could be considered bad practice
@@ -139,4 +135,4 @@ WORKDIR ${JIRA_HOME}
 ENTRYPOINT ["/sbin/tini","--","/usr/local/share/atlassian/docker-entrypoint.sh"]
 
 # Run Atlassian JIRA as a foreground process by default.
-CMD ["/opt/atlassian/jira/bin/start-jira.sh", "-fg", "-Datlassian.plugins.enable.wait=300"]
+CMD ["jira", "-Datlassian.plugins.enable.wait=300"]

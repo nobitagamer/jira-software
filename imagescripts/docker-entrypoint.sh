@@ -140,10 +140,15 @@ setAllSetEnvs
 if [ "$1" = 'jira' ] || [ "${1:0:1}" = '-' ]; then
   waitForDB
   purgeJiraPlugins
+  
+  /bin/bash ${JIRA_SCRIPTS}/patch.sh "atlassian-universal-plugin-manager-plugin-*.jar" "${JIRA_HOME}/plugins/"
+  # /bin/bash ${JIRA_SCRIPTS}/patch.sh ${JIRA_INSTALL}/atlassian-jira/WEB-INF/
+
   /bin/bash ${JIRA_SCRIPTS}/launch.sh
   if [ -n "${JIRA_PROXY_PATH}" ]; then
     xmlstarlet ed -P -S -L --update "//Context/@path" --value "${JIRA_PROXY_PATH}" ${JIRA_INSTALL}/conf/server.xml
   fi
+
   exec ${JIRA_INSTALL}/bin/start-jira.sh -fg "$@"
 else
   exec "$@"
