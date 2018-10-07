@@ -17,7 +17,7 @@ ARG LANG_LANGUAGE=en
 ARG LANG_COUNTRY=US
 
 # Configuration variables.
-ENV JIRA_HOME     /var/atlassian/jira
+ENV JIRA_HOME     /var/atlassian/jira       
 ENV JIRA_INSTALL  /opt/atlassian/jira
 ENV JIRA_SCRIPTS  /usr/local/share/atlassian 
 ENV JIRA_VERSION  7.12.2
@@ -107,13 +107,15 @@ RUN apk add --no-cache curl xmlstarlet bash ttf-dejavu tini \
 # 	&& jar uf /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar com/atlassian/extras/decoder/v2/Version2LicenseDecoder.class \
 # 	&& rm -rf ./com
 
+ENV JVM_MINIMUM_MEMORY=768m \
+    JVM_MAXIMUM_MEMORY=1280m
+
 COPY imagescripts ${JIRA_SCRIPTS}
 
 RUN set -x \
+    && sed -i 's/JVM_MINIMUM_MEMORY="384m"/JVM_MINIMUM_MEMORY="${JVM_MINIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
+	&& sed -i 's/JVM_MAXIMUM_MEMORY="768m"/JVM_MAXIMUM_MEMORY="${JVM_MAXIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
     && /bin/bash ${JIRA_SCRIPTS}/patch.sh *.jar ${JIRA_INSTALL}/atlassian-jira/WEB-INF/
-
-RUN sed -i 's/JVM_MINIMUM_MEMORY="384m"/JVM_MINIMUM_MEMORY="768m"/g' /opt/atlassian/jira/bin/setenv.sh \
-	&& sed -i 's/JVM_MAXIMUM_MEMORY="768m"/JVM_MAXIMUM_MEMORY="2048m"/g' /opt/atlassian/jira/bin/setenv.sh
 
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
