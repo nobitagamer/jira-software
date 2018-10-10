@@ -20,8 +20,9 @@ ARG LANG_COUNTRY=US
 ENV JIRA_HOME     /var/atlassian/jira       
 ENV JIRA_INSTALL  /opt/atlassian/jira
 ENV JIRA_SCRIPTS  /usr/local/share/atlassian 
-ENV JIRA_VERSION  7.12.2
-ENV GOSU_VERSION  1.10
+ENV JIRA_VERSION        7.12.2
+ENV GOSU_VERSION        1.10
+ENV DOCKERIZE_VERSION   v0.6.1
 
 # ENV JIRA_USER=jira                            \
 #     JIRA_GROUP=jira                           \
@@ -76,7 +77,7 @@ ENV GOSU_VERSION  1.10
 # 		-s /bin/bash                               \
 # 		-S $CONTAINER_USER
 
-RUN apk add --no-cache curl xmlstarlet bash ttf-dejavu tini \
+RUN apk add --no-cache curl xmlstarlet bash ttf-dejavu tini openssl \
     && mkdir -p                "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
@@ -86,6 +87,10 @@ RUN apk add --no-cache curl xmlstarlet bash ttf-dejavu tini \
     && curl -Ls                "https://jdbc.postgresql.org/download/postgresql-42.2.1.jar" -o "${JIRA_INSTALL}/lib/postgresql-42.2.1.jar" \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml" \
+    # Install dockerize version v0.6.1
+    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     # Clean caches and tmps
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*           \
