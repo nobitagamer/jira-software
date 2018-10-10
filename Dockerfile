@@ -128,8 +128,10 @@ RUN set -x \
 # USER daemon:daemon
 # USER jira
 
-# Expose default HTTP connector port.
-EXPOSE 8080
+# 8080: Expose default HTTP connector port.
+# 9093: Balsamiq Real-Time Collaboration Service
+
+EXPOSE 8080 9093
 
 # Set volume mount points for installation and home directory. Changes to the
 # home directory needs to be persisted as well as parts of the installation
