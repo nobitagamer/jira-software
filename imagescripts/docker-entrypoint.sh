@@ -105,6 +105,12 @@ if [ -n "${JIRA_PROXY_SCHEME}" ]; then
   xmlstarlet ed -P -S -L --insert "//Connector[not(@scheme)]" --type attr -n scheme --value "${JIRA_PROXY_SCHEME}" ${JIRA_INSTALL}/conf/server.xml
 fi
 
+# WORKAROUND for 7.12.2 https://confluence.atlassian.com/jirasoftware/jira-software-7-12-x-upgrade-notes-955173978.html
+if [ "${JIRA_VERSION}" = "7.12.2" ]; then
+  xmlstarlet ed -P -S -L --insert "//Connector[not(@relaxedPathChars)]" --type attr -n relaxedPathChars --value "[]|" ${JIRA_INSTALL}/conf/server.xml
+  xmlstarlet ed -P -S -L --insert "//Connector[not(@relaxedQueryChars)]" --type attr -n relaxedQueryChars --value "[]|{}^&#x5c;&#x60;&quot;&lt;&gt;" ${JIRA_INSTALL}/conf/server.xml
+fi
+
 jira_logfile="/var/atlassian/jira/log"
 
 if [ -n "${JIRA_LOGFILE_LOCATION}" ]; then
@@ -117,6 +123,10 @@ fi
 
 if [ ! -d "${jira_logfile}" ]; then
   mkdir -p ${jira_logfile}
+fi
+
+if [ ! -f "${JIRA_SCRIPTS}/jira-config.properties" ]; then
+  cp "${JIRA_SCRIPTS}/jira-config.properties" "${JIRA_HOME}/"
 fi
 
 TARGET_PROPERTY=1catalina.org.apache.juli.AsyncFileHandler.directory

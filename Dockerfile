@@ -2,9 +2,6 @@ FROM frolvlad/alpine-oraclejdk8
 # FROM debian:stretch-slim
 MAINTAINER Nguyen Khac Trieu <trieunk@yahoo.com>
 
-ARG JIRA_VERSION=7.12.2
-ARG JIRA_PRODUCT=jira-software
-
 # Permissions, set the linux user id and group id
 # ARG CONTAINER_UID=1000
 # ARG CONTAINER_GID=1000
@@ -19,7 +16,9 @@ ARG LANG_COUNTRY=US
 # Configuration variables.
 ENV JIRA_HOME     /var/atlassian/jira       
 ENV JIRA_INSTALL  /opt/atlassian/jira
-ENV JIRA_SCRIPTS  /usr/local/share/atlassian 
+ENV JIRA_SCRIPTS  /usr/local/share/atlassian
+
+# DO NOT use 7.12.2 because of this bug https://confluence.atlassian.com/jirasoftware/jira-software-7-12-x-release-notes-953676636.html
 ENV JIRA_VERSION        7.12.2
 ENV GOSU_VERSION        1.10
 ENV DOCKERIZE_VERSION   v0.6.1
