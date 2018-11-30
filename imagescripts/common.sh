@@ -66,7 +66,8 @@ extract_database_url() {
       local jdbc_url="jdbc:postgresql://$host_port_name"
       local hibernate_dialect="org.hibernate.dialect.PostgreSQLDialect"
       local database_type="postgres72"
-      local validation_query="select version();"
+      local validation_query="select 1"
+      # local validation_query="select version();"
       ;;
     mysql|mysql2)
       if [ -z "$(read_var $prefix PORT)" ]; then

@@ -19,7 +19,7 @@ ENV JIRA_INSTALL  /opt/atlassian/jira
 ENV JIRA_SCRIPTS  /usr/local/share/atlassian
 
 # DO NOT use 7.12.2 because of this bug https://confluence.atlassian.com/jirasoftware/jira-software-7-12-x-release-notes-953676636.html
-ENV JIRA_VERSION        7.12.3
+ENV JIRA_VERSION        7.13.0
 ENV GOSU_VERSION        1.10
 ENV DOCKERIZE_VERSION   v0.6.1
 
@@ -76,7 +76,10 @@ ENV DOCKERIZE_VERSION   v0.6.1
 # 		-s /bin/bash                               \
 # 		-S $CONTAINER_USER
 
-RUN apk add --no-cache curl xmlstarlet bash ttf-dejavu tini openssl \
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache curl xmlstarlet bash ttf-dejavu tini openssl ca-certificates \
+    && update-ca-certificates 2>/dev/null || true \
     && mkdir -p                "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
