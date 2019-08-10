@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8
+FROM frolvlad/alpine-java:jdk8-slim
 # FROM debian:stretch-slim
 MAINTAINER Nguyen Khac Trieu <trieunk@yahoo.com>
 
