@@ -19,7 +19,7 @@ ENV JIRA_INSTALL  /opt/atlassian/jira
 ENV JIRA_SCRIPTS  /usr/local/share/atlassian
 
 # DO NOT use 7.12.2 because of this bug https://confluence.atlassian.com/jirasoftware/jira-software-7-12-x-release-notes-953676636.html
-ENV JIRA_VERSION        7.12.3
+ENV JIRA_VERSION        7.13.5
 ENV GOSU_VERSION        1.10
 ENV DOCKERIZE_VERSION   v0.6.1
 
