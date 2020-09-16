@@ -157,7 +157,7 @@ COPY imagescripts ${JIRA_SCRIPTS}
 
 RUN set -x \
     && sed -i 's/JVM_MINIMUM_MEMORY="384m"/JVM_MINIMUM_MEMORY="${JVM_MINIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
-	&& sed -i 's/JVM_MAXIMUM_MEMORY="768m"/JVM_MAXIMUM_MEMORY="${JVM_MAXIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
+	&& sed -i 's/JVM_MAXIMUM_MEMORY="2048m"/JVM_MAXIMUM_MEMORY="${JVM_MAXIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
     && /bin/bash ${JIRA_SCRIPTS}/patch.sh *.jar ${JIRA_INSTALL}/atlassian-jira/WEB-INF/
 
 # Use the default unprivileged account. This could be considered bad practice
