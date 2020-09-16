@@ -6,7 +6,7 @@ ARG CONTAINER_UID=2001
 ARG CONTAINER_GID=2001
 
 # DO NOT use 7.12.2 because of this bug https://confluence.atlassian.com/jirasoftware/jira-software-7-12-x-release-notes-953676636.html
-ARG JIRA_VERSION=8.2.4
+ARG JIRA_VERSION=8.5.1
 ARG GOSU_VERSION=1.11
 ARG DOCKERIZE_VERSION=v0.6.1
 ARG MYSQL_DRIVER_VERSION=5.1.48
@@ -157,7 +157,7 @@ COPY imagescripts ${JIRA_SCRIPTS}
 
 RUN set -x \
     && sed -i 's/JVM_MINIMUM_MEMORY="384m"/JVM_MINIMUM_MEMORY="${JVM_MINIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
-	&& sed -i 's/JVM_MAXIMUM_MEMORY="768m"/JVM_MAXIMUM_MEMORY="${JVM_MAXIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
+	&& sed -i 's/JVM_MAXIMUM_MEMORY="2048m"/JVM_MAXIMUM_MEMORY="${JVM_MAXIMUM_MEMORY}"/g' /opt/atlassian/jira/bin/setenv.sh \
     && /bin/bash ${JIRA_SCRIPTS}/patch.sh *.jar ${JIRA_INSTALL}/atlassian-jira/WEB-INF/
 
 # Use the default unprivileged account. This could be considered bad practice
