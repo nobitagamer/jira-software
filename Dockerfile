@@ -1,4 +1,5 @@
 FROM frolvlad/alpine-java:jdk8-slim
+# FROM sgrio/java:jdk_11
 # FROM debian:stretch-slim
 
 # Permissions, set the linux user id and group id
@@ -6,7 +7,7 @@ ARG CONTAINER_UID=2001
 ARG CONTAINER_GID=2001
 
 # DO NOT use 7.12.2 because of this bug https://confluence.atlassian.com/jirasoftware/jira-software-7-12-x-release-notes-953676636.html
-ARG JIRA_VERSION=8.5.1
+ARG JIRA_VERSION=8.5.8
 ARG GOSU_VERSION=1.11
 ARG DOCKERIZE_VERSION=v0.6.1
 ARG MYSQL_DRIVER_VERSION=5.1.48
